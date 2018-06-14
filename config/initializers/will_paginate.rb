@@ -37,6 +37,21 @@ module WillPaginate
       def ul_class
          ["pagination", container_attributes[:class]].compact.join(" ")
       end
+
+      def url(page)
+        @base_url_params ||= begin
+          url_params = merge_get_params(default_url_params)
+          url_params[:only_path] = true
+          merge_optional_params(url_params)
+        end
+
+        url_params = @base_url_params.dup
+        # Remove old page params
+        url_params.except!(*Rails.configuration.page_params)
+        add_current_page_param(url_params, page)
+
+        url = @template.url_for(url_params)
+      end
     end
 
     class Bootstrap4LinkRenderer < LinkRenderer
