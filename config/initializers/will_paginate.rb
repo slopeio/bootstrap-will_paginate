@@ -46,11 +46,16 @@ module WillPaginate
         end
 
         url_params = @base_url_params.dup
+        # Get the tab param and remove it from params
+        tab = url_params[:tab]
+        url_params.except!(:tab)
         # Remove old page params
         url_params.except!(*Rails.configuration.page_params)
         add_current_page_param(url_params, page)
 
         url = @template.url_for(url_params)
+        # Append #tab to the url, which is used to choose the active tab on page reload
+        "#{url}##{tab}"
       end
     end
 
