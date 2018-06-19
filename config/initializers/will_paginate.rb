@@ -51,6 +51,8 @@ module WillPaginate
         url_params.except!(:tab)
         # Remove old page params
         url_params.except!(*Rails.configuration.page_params)
+        # Remove ignored params
+        url_params.except!(*Rails.configuration.ignored_params)
         add_current_page_param(url_params, page)
 
         url = @template.url_for(url_params)
